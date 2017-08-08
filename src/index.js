@@ -10,6 +10,7 @@ import {defaultState} from './reducers/index';
 import apiCaller from './middlewares/apiCaller';
 import urlTinkerer from './middlewares/urlTinkerer';
 import reducers from './reducers/index';
+import { createLogger } from 'redux-logger'
 
 import App from './components/App';
 
@@ -25,15 +26,34 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const history = createHistory();
 const routerMid = routerMiddleware(history);
 
-let store = createStore(
-  combineReducers({
-    ...reducers,
-    router: routerReducer
-  }),
-  initialState,
-  composeEnhancers(applyMiddleware(apiCaller, urlTinkerer, routerMid))
-);
+const development = (process.env.NODE_ENV === "development");
 
+
+let store;
+// Use action logging middleware if in developemnt mode
+if(development) {
+  const loggerMiddleware = createLogger();
+
+  store = createStore(
+    combineReducers({
+      ...reducers,
+      router: routerReducer
+    }),
+    initialState,
+    composeEnhancers(applyMiddleware(apiCaller, urlTinkerer, routerMid, loggerMiddleware))
+  );
+
+}
+else {
+  store = createStore(
+    combineReducers({
+      ...reducers,
+      router: routerReducer
+    }),
+    initialState,
+    composeEnhancers(applyMiddleware(apiCaller, urlTinkerer, routerMid))
+  );
+}
 // Store subscription that will keep the persisted state in local storage in sync with the state.
 store.subscribe(() => {
   const state = store.getState();
