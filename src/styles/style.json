@@ -2,12 +2,16 @@
     "version": 8,
     "name": "Streets",
     "light": {
-        "intensity": 0.28
+        "intensity": 0.48
     },
     "sources": {
         "composite": {
             "url": "mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7",
             "type": "vector"
+        },
+        "streetvec": {
+          "url": "mapbox://mapbox.mapbox-streets-v7",
+          "type": "vector"
         },
         "traffic": {
           "url": "mapbox://mapbox.mapbox-traffic-v1",
@@ -36,7 +40,7 @@
         }
     },
     "sprite": "This is set at runtime in the Map component.",
-    "glyphs": "mapbox://fonts/benjamintd/{fontstack}/{range}.pbf",
+    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "background",

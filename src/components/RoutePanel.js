@@ -21,6 +21,7 @@ class RoutePanel extends Component {
   }
 
   routeInfo() {
+    console.log('got some route info,', this.props.route)
     if (this.props.route) {
       return (
         <div className='flex-parent flex-parent--row flex-parent--center-cross'>

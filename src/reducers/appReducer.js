@@ -12,7 +12,7 @@ const defaultAppState = {
   needMapRestyle: false,
   // Mode
   mode: 'search',
-  modality: 'car',
+  modality: 'bike',
   // Search
   searchString: '',
   searchLocation: null,
@@ -25,6 +25,7 @@ const defaultAppState = {
   directionsToString: '',
   directionsTo: null,
   route: null,
+  routes:[],
   routeStatus: 'idle',
   lastQueried: 0,
   // Context menu
@@ -35,6 +36,10 @@ const defaultAppState = {
 };
 
 const appReducer = (state = defaultAppState, action) => {
+
+
+  if(action.data)
+  console.log('all the routes, ', action.data.routes)
   switch (action.type) {
 
   case 'SET_STATE_VALUE': {
@@ -88,6 +93,8 @@ const appReducer = (state = defaultAppState, action) => {
   case 'SET_ROUTE': {
     if (action.data.routes.length > 0 && state.directionsFrom && state.directionsTo) {
       const route = action.data.routes[0];
+      let routes = action.data.routes;
+
 
       let congestion;
       if (route.legs[0] && route.legs[0].annotation && route.legs[0].annotation.congestion) {
@@ -103,7 +110,8 @@ const appReducer = (state = defaultAppState, action) => {
       }
 
       return Object.assign({}, state, {
-        route: route
+        route: route,
+        routes: routes
       });
     } else {
       return Object.assign({}, state, {

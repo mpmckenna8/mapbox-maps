@@ -40,7 +40,9 @@ if(development) {
       router: routerReducer
     }),
     initialState,
-    composeEnhancers(applyMiddleware(apiCaller, urlTinkerer, routerMid, loggerMiddleware))
+    composeEnhancers(applyMiddleware(apiCaller, urlTinkerer,
+    //  loggerMiddleware,
+      routerMid))
   );
 
 }

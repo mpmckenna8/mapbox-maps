@@ -392,6 +392,7 @@ class MapComponent extends Component {
       this.map.getStyle().layers.forEach(layer => {
         if (layer.source === 'traffic') this.map.setLayoutProperty(layer.id, 'visibility', 'none');
         // TODO here, change the color of motorways and trunks back to orange/yellow (look in the `style` variable?)
+
       });
     }
 

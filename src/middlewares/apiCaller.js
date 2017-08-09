@@ -27,9 +27,9 @@ const apiCaller = (store) => (next) => (action) => { // eslint-disable-line
     const toCoordinates = action.directionsTo.geometry.coordinates.join(',');
 
     const url = baseUrl + profile + '/' + fromCoordinates + ';' + toCoordinates
-      + '?access_token=' + action.accessToken
+      + '?'+ 'steps=true&alternatives=true&' + 'access_token=' + action.accessToken
       + '&overview=full'
-      + annotationsParam;
+      + annotationsParam ;
 
     // Fetch
     fetch(url, {method: 'get'})

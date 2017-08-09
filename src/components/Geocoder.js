@@ -98,6 +98,8 @@ class Geocoder extends Component {
     // searchTime is compared with the last search to set the state
     // to ensure that a slow xhr response does not scramble the
     // sequence of autocomplete display.
+
+    console.log('result of a geocoder thing', body)
     if (!err && body && body.features && this.state.searchTime <= searchTime) {
       this.setState({
         searchTime: searchTime,
