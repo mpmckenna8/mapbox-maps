@@ -25,8 +25,10 @@ const defaultAppState = {
   directionsToString: '',
   directionsTo: null,
   route: null,
+  route2:null,
   routes:[],
   routeStatus: 'idle',
+  routeDisplay: true,
   lastQueried: 0,
   // Context menu
   contextMenuActive: false,
@@ -40,6 +42,7 @@ const appReducer = (state = defaultAppState, action) => {
 
   if(action.data)
   console.log('all the routes, ', action.data.routes)
+
   switch (action.type) {
 
   case 'SET_STATE_VALUE': {
@@ -91,6 +94,7 @@ const appReducer = (state = defaultAppState, action) => {
   }
 
   case 'SET_ROUTE': {
+
     if (action.data.routes.length > 0 && state.directionsFrom && state.directionsTo) {
       const route = action.data.routes[0];
       let routes = action.data.routes;
@@ -102,6 +106,16 @@ const appReducer = (state = defaultAppState, action) => {
       }
 
       const line = polyline.toGeoJSON(route.geometry);
+      let line2;
+
+
+      if(routes.length > 1) {
+        line2= polyline.toGeoJSON(routes[1].geometry)
+
+        routes[1].geometry = line2;
+
+    }
+      let line3;
 
       if (!congestion) {
         route.geometry = line;
@@ -109,6 +123,7 @@ const appReducer = (state = defaultAppState, action) => {
         route.geometry = congestionSegments(line, congestion);
       }
 
+      console.log('routes being assigned are, ', routes);
       return Object.assign({}, state, {
         route: route,
         routes: routes

@@ -8,28 +8,66 @@ import RoutePanel from './RoutePanel';
 import ModalityButtons from './ModalityButtons';
 import MyLocation from './MyLocation';
 import swapDirectionsIcon from '../assets/swapDirections.svg';
-import {triggerMapUpdate, setDirectionsLocation, setStateValue, resetStateKeys} from '../actions/index';
+import { setStateValues, triggerMapUpdate, setDirectionsLocation, setStateValue, resetStateKeys} from '../actions/index';
 
 class Directions extends Component {
   render() {
+
+
+    let routingBody = (
+      <div>
+      <CloseButton
+        large={true}
+        color='color-lighten50'
+        onClick={() => this.exitDirections()}
+      />
+      <ModalityButtons
+        modality={this.props.modality}
+        onSetModality={(modality) => {
+          this.props.setModality(modality);
+          this.props.resetStateKeys(['route', 'routeStatus']);
+          this.props.triggerMapUpdate();
+        }}
+      />
+
+    </div>
+
+    )
+
+
     return (
       <div id='directions'>
 
+        <div className="routeDetailMaxMin" onClick={ (e) => {
+            console.log('need to minimize the route info', this.props);
+            if(this.props.routeDisplay) {
+              this.props.setStateValues({routeDisplay:false})
+            }
+            else {
+              this.props.setStateValues({routeDisplay:true})
+            }
+
+              //console.log(this.props)
+
+          }}>
+          <span className={(this.props.routeDisplay === true) ? 'minimizer' : 'maximizer'} >
+
+          {
+            (this.props.routeDisplay == true) ? '-' : '+'
+          }
+
+        </span>
+
+        </div>
+
         <div className={this.styles.directions}>
 
-          <CloseButton
-            large={true}
-            color='color-lighten50'
-            onClick={() => this.exitDirections()}
-          />
-          <ModalityButtons
-            modality={this.props.modality}
-            onSetModality={(modality) => {
-              this.props.setModality(modality);
-              this.props.resetStateKeys(['route', 'routeStatus']);
-              this.props.triggerMapUpdate();
-            }}
-          />
+
+
+
+
+          {routingBody}
+
 
           <div id='directionsFromTo' className='flex-parent flex-parent--row flex-parent--center-cross'>
 
@@ -99,7 +137,6 @@ class Directions extends Component {
               </div>
 
             </div>
-          </div>
         </div>
 
         {
@@ -116,6 +153,8 @@ class Directions extends Component {
           ? <RoutePanel/>
           : null
         }
+
+        </div>
       </div>
     );
   }
@@ -190,6 +229,7 @@ Directions.propTypes = {
   modality: PropTypes.string,
   resetStateKeys: PropTypes.func,
   route: PropTypes.object,
+  routeDisplay: PropTypes.bool,
   routeStatus: PropTypes.string,
   setDirectionsLocation: PropTypes.func,
   setModality: PropTypes.func,
@@ -210,6 +250,7 @@ const mapStateToProps = (state) => {
     directionsToString: state.app.directionsToString,
     modality: state.app.modality,
     route: state.app.route,
+    routeDisplay: state.app.routeDisplay,
     routeStatus: state.app.routeStatus,
     userLocation: state.app.userLocation,
   };
@@ -223,6 +264,7 @@ const mapDispatchToProps = (dispatch) => {
     setMode: (mode) => dispatch(setStateValue('mode', mode)),
     setRoute: (route) => dispatch(setStateValue('route', route)),
     setStateValue: (k, v) => dispatch(setStateValue(k, v)),
+    setStateValues: (k) => dispatch(setStateValues(k)),
     triggerMapUpdate: (repan) => dispatch(triggerMapUpdate(repan)),
     writeSearchFrom: (value) => dispatch(setStateValue('directionsFromString', value)),
     writeSearchTo: (value) => dispatch(setStateValue('directionsToString', value)),

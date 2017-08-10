@@ -14,11 +14,14 @@ class RouteElevation extends Component {
   }
 
   render() {
+
+
     switch (this.state.status) {
     case 'pending':
       return <div className='loading--s'/>;
 
     case 'ok': {
+      console.log("in elev display ok", this.props)
       let upsAndDowns = this.upsAndDowns();
       if (upsAndDowns[0] < 20 && upsAndDowns[1] < 20) {
         return (
@@ -47,6 +50,7 @@ class RouteElevation extends Component {
     default:
       return null;
     }
+
   }
 
   componentWillReceiveProps(nextProps) {

@@ -84,6 +84,8 @@ class MapComponent extends Component {
       // remove items specific to directions mode
       this.map.getSource('fromMarker').setData(this.emptyData);
       this.map.getSource('route').setData(this.emptyData);
+      this.map.getSource('route2').setData(this.emptyData);
+
     }
 
     // Directions mode
@@ -100,10 +102,22 @@ class MapComponent extends Component {
         this.map.getSource('marker').setData(this.emptyData);
       }
 
+      console.log('there needs to be some route stuff done, routes= ', this.props.routes)
+
       if (this.props.route) {
+
         this.map.getSource('route').setData(this.props.route.geometry);
+        if(this.props.routes.length > 1) {
+
+          this.map.getSource('route2').setData(this.props.routes[1].geometry);
+
+        }
+
       } else {
+
         this.map.getSource('route').setData(this.emptyData);
+        this.map.getSource('route2').setData(this.emptyData);
+
       }
 
       // We have origin and destination but no route yet
@@ -468,6 +482,7 @@ MapComponent.propTypes = {
   resetContextMenu: PropTypes.func,
   resetStateKeys: PropTypes.func,
   route: PropTypes.object,
+  routes: PropTypes.array,
   routeStatus: PropTypes.string,
   searchLocation: PropTypes.object,
   setContextMenu: PropTypes.func,
@@ -492,6 +507,7 @@ const mapStateToProps = (state) => {
     needMapRestyle: state.app.needMapRestyle,
     needMapUpdate: state.app.needMapUpdate,
     route: state.app.route,
+    routes:state.app.routes,
     routeStatus: state.app.routeStatus,
     searchLocation: state.app.searchLocation,
     userLocation: state.app.userLocation,

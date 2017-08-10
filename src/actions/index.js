@@ -38,6 +38,8 @@ export const getRoute = (directionsFrom, directionsTo, modality, accessToken) =>
   accessToken
 });
 
+// add a set route action
+
 export const getPlaceInfo = (wikidataId) => ({
   type: 'GET_PLACE_INFO',
   id: wikidataId

@@ -2,17 +2,20 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import RouteElevation from './RouteElevation';
+import {setStateValues} from '../actions'
 
 class RoutePanel extends Component {
   render() {
     return (
-      <div className='relative mt6 bg-white w-full w420-mm hmin42 hmin48-mm shadow-darken25 flex-parent flex-parent--column flex-parent--center-main'>
+      <div className='relative mt6 bg-white w-full w420-mm hmin42 hmin48-mm
+        shadow-darken25 flex-parent flex-parent--column flex-parent--center-main'>
         {this.routeInfo()}
         {
-          this.props.modality === 'bike'
+          (this.props.modality === 'bike')
           ? <RouteElevation
               route={this.props.route}
               accessToken={this.props.mapboxAccessToken}
+              displayStatus={this.props.routeDisplay}
             />
           : null
         }
@@ -21,7 +24,8 @@ class RoutePanel extends Component {
   }
 
   routeInfo() {
-    console.log('got some route info,', this.props.route)
+
+  //  console.log('current this.props.route = ,', this.props.route)
     if (this.props.route) {
       return (
         <div className='flex-parent flex-parent--row flex-parent--center-cross'>
@@ -67,6 +71,7 @@ RoutePanel.propTypes = {
   modality: PropTypes.string,
   route: PropTypes.object,
   routeStatus: PropTypes.string.isRequired,
+  routeDisplay: PropTypes.bool
 };
 
 const mapStateToProps = (state) => {
@@ -75,6 +80,7 @@ const mapStateToProps = (state) => {
     modality: state.app.modality,
     route: state.app.route,
     routeStatus: state.app.routeStatus,
+    routeDisplay: state.app.routeDisplay
   };
 };
 

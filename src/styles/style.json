@@ -30,6 +30,10 @@
             "type": "geojson",
             "data": {"type": "FeatureCollection", "features": []}
         },
+        "route2": {
+            "type": "geojson",
+            "data": {"type": "FeatureCollection", "features": []}
+        },
         "geolocation": {
             "type": "geojson",
             "data": {"type": "FeatureCollection", "features": []}
@@ -6761,6 +6765,70 @@
             }
         },
         {
+            "id": "route2-casing",
+            "source": "route2",
+            "type": "line",
+            "paint": {
+                "line-color": {
+                    "base": 1,
+                    "type": "categorical",
+                    "property": "congestion",
+                    "default": "#ff70ab",
+                    "stops": [
+                        [
+                            "moderate",
+                            "hsl(28, 70%, 48%)"
+                        ],
+                        [
+                            "heavy",
+                            "hsl(0, 76%, 42%)"
+                        ],
+                        [
+                            "severe",
+                            "hsl(349, 83%, 20%)"
+                        ]
+                    ]
+                },
+                "line-width": 11
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            }
+        },
+           {
+                    "id": "route2",
+                    "source": "route2",
+                    "type": "line",
+                    "paint": {
+                        "line-color": {
+                            "base": 1,
+                            "type": "categorical",
+                            "property": "congestion",
+                            "default": "#ffbaf7",
+                            "stops": [
+                                [
+                                    "moderate",
+                                    "hsl(229, 100%, 65%)"
+                                ],
+                                [
+                                    "heavy",
+                                    "hsl(0, 76%, 59%)"
+                                ],
+                                [
+                                    "severe",
+                                    "hsl(350, 100%, 30%)"
+                                ]
+                            ]
+                        },
+                        "line-width": 7.5
+                    },
+                    "layout": {
+                        "line-join": "round",
+                        "line-cap": "round"
+                    }
+                },
+        {
             "id": "route-casing",
             "source": "route",
             "type": "line",
@@ -6824,6 +6892,7 @@
                 "line-cap": "round"
             }
         },
+
         {
             "id": "building-line",
             "type": "line",
