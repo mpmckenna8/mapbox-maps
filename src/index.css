@@ -73,6 +73,10 @@ body {
   z-index:100;
 }
 
+.maxMinButton {
+  background-color: #e34a33;
+}
+
 @keyframes subtle-shake {
   from,
   to { transform: translate3d(0, 0, 0); }

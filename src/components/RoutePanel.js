@@ -2,16 +2,15 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import RouteElevation from './RouteElevation';
-import {setStateValues} from '../actions'
 
 class RoutePanel extends Component {
   render() {
     return (
       <div className='relative mt6 bg-white w-full w420-mm hmin42 hmin48-mm
         shadow-darken25 flex-parent flex-parent--column flex-parent--center-main'>
-        {this.routeInfo()}
+        {this.props.routeDisplay ? this.routeInfo() : null}
         {
-          (this.props.modality === 'bike')
+          (this.props.modality === 'bike' && this.props.routeDisplay)
           ? <RouteElevation
               route={this.props.route}
               accessToken={this.props.mapboxAccessToken}

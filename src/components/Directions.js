@@ -7,20 +7,28 @@ import CloseButton from './CloseButton';
 import RoutePanel from './RoutePanel';
 import ModalityButtons from './ModalityButtons';
 import MyLocation from './MyLocation';
+import MaxMinButton from './MaxMinButton'
 import swapDirectionsIcon from '../assets/swapDirections.svg';
 import { setStateValues, triggerMapUpdate, setDirectionsLocation, setStateValue, resetStateKeys} from '../actions/index';
 
 class Directions extends Component {
   render() {
 
-
     let routingBody = (
-      <div>
-      <CloseButton
+    <div>
+      <MaxMinButton large={true} color='color-lighten59'
+        onClick={() => { this.props.setStateValues({routeDisplay: !(this.props.routeDisplay)})}}
+        routeDisplay={this.props.routeDisplay}
+        />
+
+      {this.props.routeDisplay ? (<CloseButton
         large={true}
         color='color-lighten50'
         onClick={() => this.exitDirections()}
-      />
+      />) : null}
+
+    {this.props.routeDisplay ? (
+
       <ModalityButtons
         modality={this.props.modality}
         onSetModality={(modality) => {
@@ -28,119 +36,99 @@ class Directions extends Component {
           this.props.resetStateKeys(['route', 'routeStatus']);
           this.props.triggerMapUpdate();
         }}
+        diplay={this.props.routeDisplay}
       />
-
+  ) : null }
     </div>
 
     )
 
 
+    let directionsFromTo = (
+      <div id='directionsFromTo' className='flex-parent flex-parent--row flex-parent--center-cross'>
+
+        <div
+          className='flex-child absolute left pl12 w42 flex-parent flex-parent--center-cross flex-parent--center-main'
+          onClick={() => this.swapDirections()}
+        >
+          <img src={swapDirectionsIcon} alt='swap directions'/>
+        </div>
+
+        <div className='flex-child w-full h-full'>
+          <div className={this.styles.row}>
+            {
+              this.props.directionsFrom
+              ? <div className={this.styles.placeName}>
+                <PlaceName
+                  location={this.props.directionsFrom}
+                  colors='light'
+                  onClick={() => {
+                    this.props.writeSearchFrom(this.props.directionsFrom.place_name);
+                    this.props.setDirectionsLocation('from', null);
+                    this.props.setRoute(null);
+                    this.props.setStateValue('routeStatus', 'idle');
+                  }}
+                />
+              </div>
+              : <Geocoder
+                onSelect={this.setDirectionsLocation('from')}
+                searchString={this.props.directionsFromString}
+                writeSearch={(value) => {
+                  this.props.writeSearchFrom(value);
+                  this.props.triggerMapUpdate();
+                }}
+                resultsClass={'mt48 ' + this.styles.results}
+                inputClass={this.styles.input}
+                inputPlaceholder='Choose starting point...'
+                focusOnMount={true}
+              />
+            }
+          </div>
+
+        <div className={this.styles.row}>
+          {
+            this.props.directionsTo
+              ? <div className={this.styles.placeName}>
+                <PlaceName
+                  location={this.props.directionsTo}
+                  colors='light'
+                  onClick={() => {
+                    this.props.writeSearchTo(this.props.directionsTo.place_name);
+                    this.props.resetStateKeys(['route', 'searchLocation', 'searchString', 'routeStatus', 'directionsTo']);
+                  }}
+                />
+              </div>
+            : <Geocoder
+              onSelect={this.setDirectionsLocation('to')}
+              searchString={this.props.directionsToString}
+              writeSearch={(value) => {
+                this.props.writeSearchTo(value);
+                this.props.triggerMapUpdate();
+              }}
+              resultsClass={'mt6 ' + this.styles.results}
+              inputClass={this.styles.input}
+              inputPlaceholder='Choose destination...'
+            />
+          }
+        </div>
+
+      </div>
+  </div>
+  )
+
+
     return (
       <div id='directions'>
 
-        <div className="routeDetailMaxMin" onClick={ (e) => {
-            console.log('need to minimize the route info', this.props);
-            if(this.props.routeDisplay) {
-              this.props.setStateValues({routeDisplay:false})
-            }
-            else {
-              this.props.setStateValues({routeDisplay:true})
-            }
-
-              //console.log(this.props)
-
-          }}>
-          <span className={(this.props.routeDisplay === true) ? 'minimizer' : 'maximizer'} >
-
-          {
-            (this.props.routeDisplay == true) ? '-' : '+'
-          }
-
-        </span>
-
-        </div>
-
         <div className={this.styles.directions}>
-
-
-
-
 
           {routingBody}
 
+        {this.props.routeDisplay ? directionsFromTo : null }
 
-          <div id='directionsFromTo' className='flex-parent flex-parent--row flex-parent--center-cross'>
-
-            <div
-              className='flex-child absolute left pl12 w42 h-full flex-parent flex-parent--center-cross flex-parent--center-main'
-              onClick={() => this.swapDirections()}
-            >
-              <img src={swapDirectionsIcon} alt='swap directions'/>
-            </div>
-
-            <div className='flex-child w-full h-full'>
-              <div className={this.styles.row}>
-                {
-                  this.props.directionsFrom
-                  ? <div className={this.styles.placeName}>
-                    <PlaceName
-                      location={this.props.directionsFrom}
-                      colors='light'
-                      onClick={() => {
-                        this.props.writeSearchFrom(this.props.directionsFrom.place_name);
-                        this.props.setDirectionsLocation('from', null);
-                        this.props.setRoute(null);
-                        this.props.setStateValue('routeStatus', 'idle');
-                      }}
-                    />
-                  </div>
-                  : <Geocoder
-                    onSelect={this.setDirectionsLocation('from')}
-                    searchString={this.props.directionsFromString}
-                    writeSearch={(value) => {
-                      this.props.writeSearchFrom(value);
-                      this.props.triggerMapUpdate();
-                    }}
-                    resultsClass={'mt48 ' + this.styles.results}
-                    inputClass={this.styles.input}
-                    inputPlaceholder='Choose starting point...'
-                    focusOnMount={true}
-                  />
-                }
-              </div>
-
-              <div className={this.styles.row}>
-                {
-                  this.props.directionsTo
-                  ? <div className={this.styles.placeName}>
-                    <PlaceName
-                      location={this.props.directionsTo}
-                      colors='light'
-                      onClick={() => {
-                        this.props.writeSearchTo(this.props.directionsTo.place_name);
-                        this.props.resetStateKeys(['route', 'searchLocation', 'searchString', 'routeStatus', 'directionsTo']);
-                      }}
-                    />
-                  </div>
-                  : <Geocoder
-                    onSelect={this.setDirectionsLocation('to')}
-                    searchString={this.props.directionsToString}
-                    writeSearch={(value) => {
-                      this.props.writeSearchTo(value);
-                      this.props.triggerMapUpdate();
-                    }}
-                    resultsClass={'mt6 ' + this.styles.results}
-                    inputClass={this.styles.input}
-                    inputPlaceholder='Choose destination...'
-                  />
-                }
-              </div>
-
-            </div>
-        </div>
 
         {
-          this.showUserLocation()
+          this.showUserLocation() && this.props.routeDisplay
           ? <MyLocation
             onClick={() => this.setUserLocationDirections()}
             userLocation={this.props.userLocation}
@@ -149,8 +137,8 @@ class Directions extends Component {
         }
 
         {
-          (this.props.route || this.props.routeStatus === 'pending' || this.props.routeStatus === 'error')
-          ? <RoutePanel/>
+          (this.props.route || this.props.routeStatus === 'pending' || this.props.routeStatus === 'error' )
+          ? this.props.routeDisplay ? <RoutePanel/> : null
           : null
         }
 

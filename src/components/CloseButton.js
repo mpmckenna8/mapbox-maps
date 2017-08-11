@@ -26,7 +26,7 @@ CloseButton.propTypes = {
 CloseButton.defaultProps = {
   color: 'color-gray',
   large: false,
-  onClick: () => {},
+  onClick: () => {console.log('there was a click on my new thing')},
   show: true,
 };
 

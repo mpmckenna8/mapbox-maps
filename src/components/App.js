@@ -32,44 +32,10 @@ class App extends Component {
 
           {
             (this.props.mode === 'directions')
-            ?( <div className="routeDetailMaxMin absolute left flex-parent flex-parent--row "
-                        onClick={ (e) => {
-
-                          console.log('need to minimize the route info', this.props);
-                          if(this.props.routeDisplay) {
-                            console.log(this.props)
-
-                            let setobj = this.props["setStateValues"]
-                            setobj(  {routeDisplay:false}  )
-                          }
-                          else {
-                            console.log(this.props)
-
-                            this.props.setStateValues({routeDisplay:true})
-                          }
-                            //console.log(this.props)
-
-                        }}>
-                        <span className={(this.props.routeDisplay === true) ? 'minimizer' : 'maximizer'} >
-
-                        {
-                          (this.props.routeDisplay == true) ?'-':'+'
-                        }
-
-                      </span>
-                    </div>
-
-                  )
-                  : null
-
-          }
-
-          {
-
-            (this.props.mode === 'directions' && this.props.routeDisplay == true)
             ? <Directions/>
             : <Search/>
           }
+
         </div>
         {
           (window.innerWidth > 640 && this.props.routeDisplay)
